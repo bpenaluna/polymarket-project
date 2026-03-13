@@ -1,13 +1,17 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, current_timestamp, from_json
-from pyspark.sql.types import StructType, StructField, StringType
+from pyspark.sql.types import StructType, StructField, StringType, DoubleType
 from pyspark.sql.functions import from_json
 
 # Define the schema
 schema = StructType([
-    StructField("slug", StringType()),
+    StructField("groupItemTitle", StringType()),
     StructField("outcomes", StringType()),
     StructField("outcomePrices", StringType()),
+    StructField("volume24hr", DoubleType()),
+    StructField("volume1wk", DoubleType()),
+    StructField("volume1mo", DoubleType()),
+    StructField("volume1yr", DoubleType())
 ])
 
 # Create SparkSession with Kafka packages
@@ -29,7 +33,7 @@ kafkaDF = spark.readStream \
 parsedJSON = kafkaDF.selectExpr("CAST(value AS STRING) as json_str") \
     .select(from_json(col("json_str"), schema).alias("data")) \
     .select("data.*") \
-    .withColumnRenamed("slug", "name") \
+    .withColumnRenamed("groupItemTitle", "company") \
     .withColumn("timestamp", current_timestamp())
 
 # Check if query already running
@@ -38,7 +42,7 @@ for s in spark.streams.active:
         print(f"Stopping existing query: data")
         s.stop()
 
-# Create the "Write" stream to display data in your terminal
+# Create the "Write" stream to display data in  terminal
 query = parsedJSON.writeStream \
     .format("delta") \
     .option("checkpointLocation", "./checkpoints") \
