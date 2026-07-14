@@ -7,8 +7,16 @@ spark = SparkSession.builder \
     .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog") \
     .getOrCreate()
 
-# Read the folder as a single Delta table
-df = spark.read.format("delta").load("./data/pm_data")
+spark.sparkContext.setLogLevel("ERROR")
 
-print(df.show())
-print(df.count())
+# Read the folder as a single Delta table
+pm_df = spark.read.format("delta").load("./data/pm_data")
+cg_df = spark.read.format("delta").load("./data/cg_data")
+
+print("Polymarket Data\n===============")
+print(pm_df.show())
+print(pm_df.count())
+print("\n")
+print("Coingecko Data\n==============")
+print(cg_df.show())
+print(cg_df.count())

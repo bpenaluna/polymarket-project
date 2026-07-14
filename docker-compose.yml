@@ -32,3 +32,13 @@ services:
     depends_on:
       - kafka
     entrypoint: [ "python", "/opt/bitnami/spark/producer.py" ]
+
+  # 4. Dashboard
+  dashboard:
+    build: ./dashboard
+    ports:
+      - "8050:8050"
+    volumes:
+      - ./data:/app/data:ro
+    depends_on:
+      - spark-app

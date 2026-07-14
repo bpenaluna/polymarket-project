@@ -1,7 +1,7 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, current_timestamp, from_json
-from pyspark.sql.types import StructType, StructField, StringType, IntegerType
-from pyspark.sql.functions import from_json
+from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DoubleType, ArrayType
+from pyspark.sql.functions import from_json, col, element_at, array_position
 
 polymarketSchema = StructType([
     StructField("slug", StringType()),
@@ -35,6 +35,17 @@ polymarketKafkaDF = spark.readStream \
 polymarketParsedJSON = polymarketKafkaDF.selectExpr("CAST(value AS STRING) as json_str") \
     .select(from_json(col("json_str"), polymarketSchema).alias("data")) \
     .select("data.*") \
+    .withColumn("outcomes_arr", from_json(col("outcomes"), ArrayType(StringType()))) \
+    .withColumn("prices_arr", from_json(col("outcomePrices"), ArrayType(StringType()))) \
+    .withColumn(
+        "up_outcome",
+        element_at(col("prices_arr"), array_position(col("outcomes_arr"), "Up").cast(IntegerType())).cast(DoubleType())
+    ) \
+    .withColumn(
+        "down_outcome",
+        element_at(col("prices_arr"), array_position(col("outcomes_arr"), "Down").cast(IntegerType())).cast(DoubleType())
+    ) \
+    .drop("outcomes", "outcomePrices", "outcomes_arr", "prices_arr") \
     .withColumn("timestamp", current_timestamp())
 
 coingeckoKafkaDF = spark.readStream \
