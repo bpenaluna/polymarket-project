@@ -40,7 +40,3 @@ A Kafka + Spark Structured Streaming pipeline that ingests Polymarket data, pars
 ```bash
 docker compose exec spark-app spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.5,io.delta:delta-spark_2.12:3.3.0 view_data.py
 ```
-
-## Notes
-
-- `stream-processor.py` expects data on both `topicBTCpm` (Polymarket) and `topicBTCcg` (CoinGecko), but only the Polymarket producer is currently included — a CoinGecko producer would need to be added to populate `cg_data`.
