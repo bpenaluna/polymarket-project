@@ -11,3 +11,4 @@ spark = SparkSession.builder \
 df = spark.read.format("delta").load("./data/pm_data")
 
 print(df.show())
+print(df.count())

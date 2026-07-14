@@ -20,9 +20,9 @@ A Kafka + Spark Structured Streaming pipeline that ingests Polymarket data, pars
    ```
 
    This spins up three services:
-   - **kafka** — a single-node Kafka broker (KRaft mode, no Zookeeper) on port `9092`
-   - **pm-producer** — polls the Polymarket API every 30s and publishes active market data to the `topicBTCpm` Kafka topic
-   - **spark-app** — runs `stream-processor.py` via `spark-submit`, consuming from Kafka, parsing the JSON payloads, and writing the results out as Delta tables under `./data`
+   - **kafka** — a single-node Kafka broker (KRaft) on port `9092`
+   - **pm-producer** — pulls the Polymarket API every 30s and publishes active market data to the `topicBTCpm` Kafka topic
+   - **spark-app** — runs `stream-processor.py` via `spark-submit`, consuming from Kafka, parsing the JSON, and writing the results as Delta tables under `./data`
 
 3. Data and checkpoints persist to your local machine via the mounted volumes:
    - `./data` — output Delta tables (`pm_data`, `cg_data`)
