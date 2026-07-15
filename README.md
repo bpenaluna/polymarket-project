@@ -43,10 +43,4 @@ Once the stack is up, visit **http://localhost:8050** to view it. It shows two l
 
 It's built with **Dash** and **Plotly**, and reads the Delta tables directly using **DuckDB**'s `delta_scan`, so it doesn't need a JVM or PySpark to run. The `./data` folder is mounted into the dashboard container read-only, so it never writes to the tables Spark is producing.
 
-## Viewing the Data
-
-`view_data.py` reads the `pm_data` Delta table and prints it out. Run it from within the `spark-app` container (or any environment with matching PySpark + Delta dependencies):
-
-```bash
-docker compose exec spark-app spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.5,io.delta:delta-spark_2.12:3.3.0 view_data.py
-```
+<img width="1887" height="669" alt="image" src="https://github.com/user-attachments/assets/5d10515e-5813-4824-a5ee-7e8caa98ad8c" />
