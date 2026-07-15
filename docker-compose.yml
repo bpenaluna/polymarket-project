@@ -15,7 +15,7 @@ services:
 
   # 2. Spark Application
   spark-app:
-    build: .
+    build: ./spark-app
     depends_on:
       - kafka
     volumes:
@@ -28,10 +28,9 @@ services:
 
   # 3. Producer
   pm-producer:
-    build: .
+    build: ./producer
     depends_on:
       - kafka
-    entrypoint: [ "python", "/opt/bitnami/spark/producer.py" ]
 
   # 4. Dashboard
   dashboard:
