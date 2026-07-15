@@ -43,4 +43,4 @@ Once the stack is up, visit **http://localhost:8050** to view it. It shows two l
 
 It's built with **Dash** and **Plotly**, and reads the Delta tables directly using **DuckDB**'s `delta_scan`, so it doesn't need a JVM or PySpark to run. The `./data` folder is mounted into the dashboard container read-only, so it never writes to the tables Spark is producing.
 
-<img width="1887" height="669" alt="image" src="https://github.com/user-attachments/assets/5d10515e-5813-4824-a5ee-7e8caa98ad8c" />
+<img width="937" height="318" alt="Screenshot 2026-07-15 111530" src="https://github.com/user-attachments/assets/6cd6a942-40ad-4421-b0e6-4c1e1b45b9f8" />
